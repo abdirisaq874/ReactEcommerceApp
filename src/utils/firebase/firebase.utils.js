@@ -15,7 +15,7 @@ import {
   setDoc,
   collection,
   query,
-  getDocs
+  getDocs,
 } from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
@@ -57,15 +57,13 @@ const db = getFirestore();
 //   await batch.commit();
 // };
 
+const getCollectionAndDocuments = async () => {
+  const collectionRef = collection(db, "category");
 
-const getCollectionAndDocuments = async ()=>{
-  const collectionRef = collection(db,'category')
-
-  const q = query(collectionRef)
-  const querySnapShot = await getDocs(q)
-  return querySnapShot.docs.map(docsnapshot=>docsnapshot.data())
-  
-}
+  const q = query(collectionRef);
+  const querySnapShot = await getDocs(q);
+  return querySnapShot.docs.map((docsnapshot) => docsnapshot.data());
+};
 
 const createUserDocumentFromAuth = async (
   userAuth,
@@ -79,7 +77,6 @@ const createUserDocumentFromAuth = async (
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
-
     try {
       await setDoc(userDocRef, {
         displayName,
@@ -92,7 +89,7 @@ const createUserDocumentFromAuth = async (
     }
   }
 
-  return userDocRef;
+  return userSnapshot;
 };
 
 const createUserWithEmailAndpassword = async (email, password) => {
@@ -106,8 +103,20 @@ const SignInAuthWithEmailandPassword = async (email, password) => {
 };
 
 const SignOutApp = async () => await signOut(Auth);
-const authenticationstatechanged = (callback) => {
-  return onAuthStateChanged(Auth, callback);
+
+// const authenticationstatechanged = (callback) => {
+//   return onAuthStateChanged(Auth, callback);
+// };
+
+export const getCurrentUser = () => {
+  return new Promise((res, rej) => {
+    const unSubscribe = onAuthStateChanged(Auth, (user) => {
+      unSubscribe();
+      res(user);
+    },
+    rej
+    );
+  });
 };
 
 export {
@@ -118,6 +127,5 @@ export {
   createUserWithEmailAndpassword,
   SignInAuthWithEmailandPassword,
   SignOutApp,
-  authenticationstatechanged,
-  getCollectionAndDocuments
+  getCollectionAndDocuments,
 };

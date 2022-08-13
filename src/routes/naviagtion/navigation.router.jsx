@@ -7,16 +7,21 @@ import {
   NavLinksContainerStyle,
   Navlinkstyle
 } from "./navigation.styles.jsx";
-import { SignOutApp } from "../../utils/firebase/firebase.utils";
 import Cart from "../../components/cart-icon/cart-icon.component";
 import CartDropDown from "../../components/cart-drop-down/cartDropDown.component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { selectISCartOpen } from "../../store/cart/cart.selector";
+import { SignOutStart } from "../../store/user/user.action";
 
 const Navigation = () => {
   const IsCartOpen  = useSelector(selectISCartOpen)
   const CurrentUser = useSelector(selectCurrentUser)
+  const dispatch =useDispatch()
+
+  const SignOutApp=()=>{
+    dispatch(SignOutStart())
+  }
   return (
     <Fragment>
       <Navigationstyle>
