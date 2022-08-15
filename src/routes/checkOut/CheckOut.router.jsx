@@ -3,6 +3,7 @@ import CheckOutItem from "../../components/checkOut.Item/checkOut.Item.component
 import { CheckoutContainerStyle, CheckoutHeaderStyle, TotalStyle } from"./checkout.styles.jsx";
 import { useSelector } from "react-redux";
 import { CartTotalSelector, selectCartItems } from "../../store/cart/cart.selector";
+import PaymentForm from "../../components/payment/PaymentForm.component";
 const CheckOut = () => {
   const  TotalPrice  = useSelector(CartTotalSelector);
   const CartItems= useSelector(selectCartItems)
@@ -36,6 +37,7 @@ const CheckOut = () => {
             );
           })}
           <TotalStyle> total : ${TotalPrice}</TotalStyle>
+          <PaymentForm/>
         </>
       ) : (
         <div>no checkOut Item Available right now</div>
