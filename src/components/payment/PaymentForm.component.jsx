@@ -25,7 +25,7 @@ const PaymentForm = () => {
     if (!stripe || !Elements) return;
     SetIsProcessingPaymnet(true)
     const response = await fetch(
-      "https://stripe-server2.herokuapp.com/create-checkout-session",
+      "http://server-env.eba-3i9zpjdm.us-east-1.elasticbeanstalk.com/create-checkout-session",
       {
         method: "Post",
         headers: {
